@@ -11,12 +11,12 @@ dependencies {
     compile files('libs/Parse-1.9.4.jar')
     compile files('libs/picasso-2.4.0.jar')
     compile files('libs/umeng-analytics-v5.2.4.jar')
-    compile project(':bQMM_Lib')
+    compile project(':BQMM_Lib')
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
 
     sourceSets {
         main {

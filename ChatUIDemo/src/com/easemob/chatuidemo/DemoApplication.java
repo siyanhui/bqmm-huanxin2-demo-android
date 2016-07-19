@@ -65,9 +65,7 @@ public class DemoApplication extends Application {
         /**
          * 初始化BQMMSDK,通过官网获取AppId以及AppSecert
          */
-//        BQMM.getInstance().initConfig(applicationContext,"YOUR_APP_ID", "YOUR_APP_SECRET");
-       BQMM.getInstance().initConfig(applicationContext,"15e0710942ec49a29d2224a6af4460ee", "b11e0936a9d04be19300b1d6eec0ccd5");//新修改后的AppId
-       
+        BQMM.getInstance().initConfig(applicationContext,"YOUR_APP_ID", "YOUR_APP_SECRET");
 	}
 
 	public static DemoApplication getInstance() {

@@ -1,1 +1,1 @@
-include ':bQMM_Lib'
+include ':bQMM_Lib', ':BQMM_Lib'
