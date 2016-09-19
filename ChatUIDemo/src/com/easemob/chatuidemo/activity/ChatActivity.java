@@ -438,7 +438,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         /**
          * 设置键盘的默认高度
          */
-        int defaultHeight = DensityUtils.dip2px(this, 250);
+        int defaultHeight = DensityUtils.dip2px(250);
         int height = getPreferences(MODE_PRIVATE).getInt(LAST_KEYBOARD_HEIGHT, defaultHeight);
         ViewGroup.LayoutParams params = bqmmKeyboard.getLayoutParams();
         if (params != null) {
