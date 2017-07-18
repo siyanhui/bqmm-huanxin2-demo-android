@@ -30,7 +30,7 @@ dependencies {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "25.0.2"
 
     sourceSets {
         main {
@@ -71,7 +71,7 @@ android {
 
 buildscript {
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.3.3'
     }
     repositories {
         jcenter()

@@ -3,19 +3,19 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0'
+        classpath 'com.android.tools.build:gradle:2.3.3'
     }
 }
 apply plugin: 'com.android.library'
 
 dependencies {
-    compile files('libs/bqmm_v1.7.10.jar')
-    compile 'com.android.support:support-v4:23.1.1'
+    compile files('libs/bqmm_v1.7.11.jar')
+    compile 'com.android.support:support-v4:25.3.1'
 }
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.2'
 
     sourceSets {
         main {
