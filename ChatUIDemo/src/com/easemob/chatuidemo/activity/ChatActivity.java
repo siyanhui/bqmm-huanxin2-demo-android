@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -99,6 +100,8 @@ import com.easemob.chatuidemo.R;
 import com.easemob.chatuidemo.adapter.ExpressionAdapter;
 import com.easemob.chatuidemo.adapter.MessageAdapter;
 import com.easemob.chatuidemo.adapter.VoicePlayClickListener;
+import com.easemob.chatuidemo.bqmmgif.BQMMGifManager;
+import com.easemob.chatuidemo.bqmmgif.IBqmmSendGifListener;
 import com.easemob.chatuidemo.domain.RobotUser;
 import com.easemob.chatuidemo.utils.CommonUtils;
 import com.easemob.chatuidemo.utils.ImageUtils;
@@ -111,12 +114,14 @@ import com.easemob.util.EMLog;
 import com.easemob.util.PathUtil;
 import com.easemob.util.VoiceRecorder;
 import com.melink.baseframe.utils.DensityUtils;
+import com.melink.bqmmsdk.bean.BQMMGif;
 import com.melink.bqmmsdk.bean.Emoji;
 import com.melink.bqmmsdk.sdk.BQMM;
 import com.melink.bqmmsdk.sdk.BQMMMessageHelper;
 import com.melink.bqmmsdk.sdk.IBqmmSendMessageListener;
 import com.melink.bqmmsdk.task.BQMMPopupViewTask;
 import com.melink.bqmmsdk.ui.keyboard.BQMMKeyboard;
+import com.melink.bqmmsdk.ui.keyboard.IGifButtonClickListener;
 import com.melink.bqmmsdk.widget.BQMMSendButton;
 
 /**
@@ -163,7 +168,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	
 	public static final String EMOJITYPE = "emojitype";
 	public static final String FACETYPE = "facetype";
-
+	public static final String WEBTYPE = "webtype";
 	public static final String COPY_IMAGE = "EASEMOBIMG";
 	private View recordingContainer;
 	private ImageView micImage;
@@ -410,9 +415,15 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         bqmmsdk = BQMM.getInstance();
         //初始化表情MM键盘，需要传入关联的EditView,SendBtn
         bqmmsdk.setEditView(bqmmEditText);
-        bqmmsdk.setKeyboard(bqmmKeyboard);
+        bqmmsdk.setKeyboard(bqmmKeyboard, new IGifButtonClickListener() {
+			@Override
+			public void didClickGifTab() {
+				BQMMGifManager.getInstance(getBaseContext()).showTrending();
+			}
+		});
         bqmmsdk.setSendButton(bqmmSendButton);
         bqmmsdk.load();
+		BQMMGifManager.getInstance(this).addEditViewListeners();
         //设置表情SDK消息监听
         bqmmsdk.setBqmmSendMsgListener(new IBqmmSendMessageListener() {
            @Override
@@ -433,7 +444,12 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
             }
         }
        });
-        
+        BQMMGifManager.getInstance(getBaseContext()).setBQMMSendGifListener(new IBqmmSendGifListener() {
+			@Override
+			public void onSendBQMMGif(BQMMGif bqmmGif) {
+				sendBQMMGif(bqmmGif);
+			}
+		});
         
         /**
          * 设置键盘的默认高度
@@ -1233,6 +1249,48 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
             setResult(RESULT_OK);
         }
     }
+
+	/**
+	 * 发送BQMMGif
+	 * @param bqmmGif
+	 */
+	public void sendBQMMGif(BQMMGif bqmmGif){
+		String content = "["+bqmmGif.getText()+"]";
+		JSONObject jsonObject = new JSONObject();
+		EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
+		// 如果是群聊，设置chattype,默认是单聊
+		if (chatType == CHATTYPE_GROUP){
+			message.setChatType(ChatType.GroupChat);
+		}else if(chatType == CHATTYPE_CHATROOM){
+			message.setChatType(ChatType.ChatRoom);
+		}
+		if(isRobot){
+			message.setAttribute("em_robot_message", true);
+		}
+		TextMessageBody txtBody = new TextMessageBody(content);
+		// 设置消息body
+		message.addBody(txtBody);
+		try {
+			jsonObject.put("data_id",bqmmGif.getSticker_id());
+			jsonObject.put("h",bqmmGif.getSticker_height());
+			jsonObject.put("w",bqmmGif.getSticker_width());
+			jsonObject.put("sticker_url",bqmmGif.getSticker_url());
+			jsonObject.put("is_gif",bqmmGif.getIs_gif());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		message.setAttribute(Constant.TEXT_MESSAGE_TYPE, WEBTYPE);
+		message.setAttribute(Constant.MESSAGE_DATA, jsonObject);
+		// 设置要发给谁,用户username或者群聊groupid
+		message.setReceipt(toChatUsername);
+		// 把messgage加到conversation中
+		conversation.addMessage(message);
+		// 通知adapter有消息变动，adapter会根据加入的这条message显示消息和调用sdk的发送方法
+		adapter.refreshSelectLast();
+		bqmmEditText.setText("");
+		setResult(RESULT_OK);
+	}
 
 	/**
 	 * 发送语音

@@ -713,16 +713,26 @@ public class MessageAdapter extends BaseAdapter {
         // 判断是否是表情文本
         String tex_msgType = "";
         JSONArray msg_Data = null;
+        JSONObject gif_msg_Data = null;
         try {
             //消息类型
             tex_msgType = message.getStringAttribute(Constant.TEXT_MESSAGE_TYPE);
-            //消息内容JSONArray
-            msg_Data = message.getJSONArrayAttribute(Constant.MESSAGE_DATA);
+            if (tex_msgType.equals(ChatActivity.WEBTYPE)) {
+                gif_msg_Data = message.getJSONObjectAttribute(Constant.MESSAGE_DATA);
+            } else {
+                //消息内容JSONArray
+                msg_Data = message.getJSONArrayAttribute(Constant.MESSAGE_DATA);
+            }
+
         } catch (EaseMobException e) {
             e.printStackTrace();
         }
-        holder.bqmm_message_tv.setBigEmojiShowSize(200);
-        holder.bqmm_message_tv.showMessage(message.getMsgId(),txtBody.getMessage(), tex_msgType, msg_Data);  
+        if (TextUtils.equals(tex_msgType, ChatActivity.WEBTYPE)) {
+            holder.bqmm_message_tv.showWebSticker(gif_msg_Data.optString("data_id"), gif_msg_Data.optString("sticker_url"), gif_msg_Data.optInt("w"), gif_msg_Data.optInt("h"), gif_msg_Data.optInt("is_gif"));
+        } else {
+            holder.bqmm_message_tv.setStickerSize(200);
+            holder.bqmm_message_tv.showMessage(txtBody.getMessage(), tex_msgType, msg_Data);
+        }
         // 发送方的状态展示
         if (message.direct == EMMessage.Direct.SEND) {
             switch (message.status) {
