@@ -728,7 +728,7 @@ public class MessageAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         if (TextUtils.equals(tex_msgType, ChatActivity.WEBTYPE)) {
-            holder.bqmm_message_tv.showWebSticker(gif_msg_Data.optString("data_id"), gif_msg_Data.optString("sticker_url"), gif_msg_Data.optInt("w"), gif_msg_Data.optInt("h"), gif_msg_Data.optInt("is_gif"));
+            holder.bqmm_message_tv.showBQMMGif(gif_msg_Data.optString("data_id"), gif_msg_Data.optString("sticker_url"), gif_msg_Data.optInt("w"), gif_msg_Data.optInt("h"), gif_msg_Data.optInt("is_gif"));
         } else {
             holder.bqmm_message_tv.setStickerSize(200);
             holder.bqmm_message_tv.showMessage(txtBody.getMessage(), tex_msgType, msg_Data);

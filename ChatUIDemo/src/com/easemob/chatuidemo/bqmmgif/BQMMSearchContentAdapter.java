@@ -40,11 +40,11 @@ public class BQMMSearchContentAdapter extends RecyclerView.Adapter<BQMMSearchCon
         final BQMMGif item = mBQMMGifList.get(position);
         int pixels = DensityUtils.dip2px(80);
         if (!TextUtils.isEmpty(item.getGif_thumb())) {
-            holder.bqmmMessageTextView.showWebSticker(item.getSticker_id(), item.getGif_thumb(), pixels, pixels, item.getIs_gif(), BQMMConstant.WEBSTICKER_THUMB_PACKAGE);
+            holder.bqmmMessageTextView.showBQMMGif(item.getSticker_id(), item.getGif_thumb(), pixels, pixels, item.getIs_gif(), BQMMConstant.WEBSTICKER_THUMB_PACKAGE);
         } else if (!TextUtils.isEmpty(item.getThumb())) {
-            holder.bqmmMessageTextView.showWebSticker(item.getSticker_id(), item.getThumb(), pixels, pixels, 0, BQMMConstant.WEBSTICKER_THUMB_PACKAGE);
+            holder.bqmmMessageTextView.showBQMMGif(item.getSticker_id(), item.getThumb(), pixels, pixels, 0, BQMMConstant.WEBSTICKER_THUMB_PACKAGE);
         } else {
-            holder.bqmmMessageTextView.showWebSticker(item.getSticker_id(), item.getSticker_url(), pixels, pixels, item.getIs_gif(), BQMMConstant.WEBSTICKER_MAIN_PACKAGE);
+            holder.bqmmMessageTextView.showBQMMGif(item.getSticker_id(), item.getSticker_url(), pixels, pixels, item.getIs_gif(), BQMMConstant.WEBSTICKER_MAIN_PACKAGE);
         }
         holder.bqmmMessageTextView.setOnClickListener(new View.OnClickListener() {
             @Override

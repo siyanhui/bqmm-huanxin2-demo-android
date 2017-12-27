@@ -345,7 +345,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 					btnMore.setVisibility(View.VISIBLE);
 				}
 				
-				BQMM.getInstance().startShortcutPopupWindowByoffset(ChatActivity.this, s.toString(),bqmmSendButton,0,40);
 			}
 
 			@Override
@@ -418,7 +417,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         bqmmsdk.setKeyboard(bqmmKeyboard, new IGifButtonClickListener() {
 			@Override
 			public void didClickGifTab() {
-				BQMMGifManager.getInstance(getBaseContext()).showTrending();
+				bqmmEditText.requestFocus();
+				showSoftInput(bqmmEditText);
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						BQMMGifManager.getInstance(getBaseContext()).showTrending();
+					}
+				},300);
 			}
 		});
         bqmmsdk.setSendButton(bqmmSendButton);

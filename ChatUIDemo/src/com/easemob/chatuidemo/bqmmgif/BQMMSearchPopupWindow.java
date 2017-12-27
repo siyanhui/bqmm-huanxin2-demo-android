@@ -1,10 +1,12 @@
 package com.easemob.chatuidemo.bqmmgif;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.melink.baseframe.utils.DensityUtils;
@@ -27,6 +29,7 @@ public class BQMMSearchPopupWindow extends PopupWindow {
     private LoadMoreListener mLoadMoreListener;
     private int[] mParentLocation = new int[]{0, 0};
     private WeakReference<View> mParentViewWeakReference;
+    private LinearLayout mLinearLayout;
 
     public BQMMSearchPopupWindow(Context context, int height) {
         super();
@@ -34,6 +37,11 @@ public class BQMMSearchPopupWindow extends PopupWindow {
         mRecyclerView = new RecyclerView(context);
         mLinearLayoutManager = new LinearLayoutManager(mContext);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mLinearLayout = new LinearLayout(mContext);
+        mLinearLayout.setBackgroundColor(Color.WHITE);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mLinearLayout.setLayoutParams(layoutParams);
+
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mAdapter = new BQMMSearchContentAdapter();
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -50,7 +58,8 @@ public class BQMMSearchPopupWindow extends PopupWindow {
             }
         });
         mRecyclerView.setAdapter(mAdapter);
-        setContentView(mRecyclerView);
+        mLinearLayout.addView(mRecyclerView);
+        setContentView(mLinearLayout);
         setHeight(height);
         setFocusable(false);
     }
@@ -67,12 +76,9 @@ public class BQMMSearchPopupWindow extends PopupWindow {
             if (parent != null) {
                 if (isShowing()) dismiss();
                 mAdapter.setMMWebStickerList(stickers);
-                int pixels = DensityUtils.dip2px(90);
-                int contentWidth = stickers.size() * pixels;
                 int screenWidth = DensityUtils.getScreenW();
-                int width = contentWidth > screenWidth ? screenWidth : contentWidth;
-                setWidth(width);
-                showAtLocation(parent, Gravity.NO_GRAVITY, mParentLocation[0] + parent.getWidth() - getWidth(), mParentLocation[1] - getHeight());
+                setWidth(screenWidth);
+                showAtLocation(parent, Gravity.NO_GRAVITY, 0, mParentLocation[1] - getHeight());
             }
         }
     }

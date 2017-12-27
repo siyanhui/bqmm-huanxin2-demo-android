@@ -1,9 +1,11 @@
 package com.easemob.chatuidemo.bqmmgif;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -79,7 +81,7 @@ public class BQMMGifManager implements IBQMMGifManager {
         mPopupWindow.setLoadMoreListener(new BQMMSearchPopupWindow.LoadMoreListener() {
             @Override
             public void loadMore() {
-                if (mIsLoading || !mNeedLoadMore && mCurrentPage > 5) return;
+                if (mIsLoading || !mNeedLoadMore || mCurrentPage > 5) return;
                 if (mShowingTrending) {
                     getTrendingData();
                 } else {
@@ -102,6 +104,7 @@ public class BQMMGifManager implements IBQMMGifManager {
     /**
      * 在输入框实例化后调用，两个监听事件分别是文字清空和输入框距离底部小于40即（键盘关闭的时候），隐藏弹窗。
      */
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     public void addEditViewListeners() {
         BQMM.getInstance().getEditView().addTextChangedListener(new TextWatcher() {
             @Override
@@ -122,7 +125,7 @@ public class BQMMGifManager implements IBQMMGifManager {
             public void afterTextChanged(Editable s) {
             }
         });
-        BQMM.getInstance().getEditView().getRootView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+        BQMM.getInstance().getEditView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 if (BQMM.getInstance().getEditView() != null) {
