@@ -35,6 +35,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.v4.view.ViewCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -729,7 +730,15 @@ public class MessageAdapter extends BaseAdapter {
         }
         if (TextUtils.equals(tex_msgType, ChatActivity.WEBTYPE)) {
             holder.bqmm_message_tv.showBQMMGif(gif_msg_Data.optString("data_id"), gif_msg_Data.optString("sticker_url"), gif_msg_Data.optInt("w"), gif_msg_Data.optInt("h"), gif_msg_Data.optInt("is_gif"));
+            ViewCompat.setBackground(holder.bqmm_message_tv, null);
         } else {
+            if (TextUtils.equals(tex_msgType, ChatActivity.FACETYPE)) {
+                ViewCompat.setBackground(holder.bqmm_message_tv, null);
+            } else if (message.direct == EMMessage.Direct.RECEIVE) {
+                holder.bqmm_message_tv.setBackgroundResource(R.drawable.chatfrom_bg);
+            } else {
+                holder.bqmm_message_tv.setBackgroundResource(R.drawable.chatto_bg);
+            }
             holder.bqmm_message_tv.setStickerSize(200);
             holder.bqmm_message_tv.showMessage(txtBody.getMessage(), tex_msgType, msg_Data);
         }

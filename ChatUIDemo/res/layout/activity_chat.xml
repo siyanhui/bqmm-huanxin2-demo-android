@@ -262,7 +262,6 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="4dp"
                 android:background="@drawable/chat_send_btn_selector"
-                android:onClick="onClick"
                 android:text="@string/button_send"
                 android:textColor="#666666"
                 android:textSize="15sp"

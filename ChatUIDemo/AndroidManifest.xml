@@ -316,18 +316,6 @@
         </activity>
         
         <activity
-            android:name="com.melink.bqmmsdk.ui.store.EmojiPackageDown"
-            android:screenOrientation="portrait"
-            android:theme="@style/bqmm_horizontal_slide" >
-        </activity>
-        
-        <activity
-            android:name="com.melink.bqmmsdk.ui.store.EmojiPackageMyCollection"
-            android:screenOrientation="portrait"
-            android:theme="@style/bqmm_horizontal_slide" >
-        </activity>
-        
-        <activity
             android:name="com.melink.bqmmsdk.ui.store.EmojiPackageSetting"
             android:screenOrientation="portrait"
             android:theme="@style/bqmm_horizontal_slide" >
@@ -347,6 +335,12 @@
         
         <activity 
             android:name="com.melink.bqmmsdk.ui.store.EmojiPackageSort"
+            android:screenOrientation="portrait"
+            android:theme="@style/bqmm_horizontal_slide" >
+        </activity>
+
+        <activity
+            android:name="com.melink.bqmmsdk.ui.store.AuthorDetail"
             android:screenOrientation="portrait"
             android:theme="@style/bqmm_horizontal_slide" >
         </activity>

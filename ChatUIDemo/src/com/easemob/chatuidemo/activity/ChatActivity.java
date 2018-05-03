@@ -422,14 +422,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 				new Handler().postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						BQMMGifManager.getInstance(getBaseContext()).showTrending();
+						BQMMGifManager.getInstance().showTrending();
 					}
 				},300);
 			}
 		});
         bqmmsdk.setSendButton(bqmmSendButton);
         bqmmsdk.load();
-		BQMMGifManager.getInstance(this).addEditViewListeners();
+		BQMMGifManager.getInstance().addEditViewListeners();
         //设置表情SDK消息监听
         bqmmsdk.setBqmmSendMsgListener(new IBqmmSendMessageListener() {
            @Override
@@ -450,7 +450,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
             }
         }
        });
-        BQMMGifManager.getInstance(getBaseContext()).setBQMMSendGifListener(new IBqmmSendGifListener() {
+        BQMMGifManager.getInstance().setBQMMSendGifListener(new IBqmmSendGifListener() {
 			@Override
 			public void onSendBQMMGif(BQMMGif bqmmGif) {
 				sendBQMMGif(bqmmGif);
